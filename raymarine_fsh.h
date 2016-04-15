@@ -18,12 +18,15 @@
 /*! This file contains all data structurs used to parse the ARCHIVE.FSH.
  *
  *  @author Bernhard R. Fischer
+ *          Scott Emmons - gpsbabel integration
  *
- *  ACKNOLEDGEMENTS
+ *  ACKNOWLEDGEMENTS
  *  Thanks to KHB for discovering depth, temperature, and timestamp fields in
  *  the waypoint structures!
  *  Thanks to Robbilard for the group22 header!
  */
+
+// TODO: Header block conformity for gpsbabel
 
 #ifndef RAYMARINE_FSH_H
 #define RAYMARINE_FSH_H

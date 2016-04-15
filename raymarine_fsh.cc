@@ -18,7 +18,10 @@
 /*! This file contains support for the Raymarine FSH format.
  *
  *  @author Bernhard R. Fischer
+ *          Scott Emmons - gpsbabel integration
  */
+
+// TODO: Header block conformity for gpsbabel
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -456,9 +459,12 @@ Waypoint* make_wpt(const fsh_wpt_data_t *wpd, const ellipsoid_t *el, int64_t gui
   wpt->description = QString().sprintf("%.*s", wpd->cmt_len, wpd->txt_data + wpd->name_len);
   wpt->latitude = cd.lat;
   wpt->longitude = cd.lon;
-  // TODO: creation_time
-  // TODO: depth (?)
-  // TODO: temperature
+  wpt->SetCreationTime((time_t) wpd->ts.date * 3600 * 24 + wpd->ts.timeofday);
+  if (wpd->tempr != TEMPR_NA)
+        WAYPT_SET(wpt, temperature, CELSIUS(wpd->tempr));
+  // TODO: depth units right?
+  if (wpd->depth != DEPTH_NA)
+        WAYPT_SET(wpt, depth, wpd->depth/100);
 
   return(wpt);
 }
@@ -581,9 +587,13 @@ int track_output(const track_t *trk, int cnt, const ellipsoid_t *el)
             //wpt->description = QString().sprintf("%.*s", wpd->cmt_len, wpd->txt_data + wpd->name_len);
             wpt->latitude = cd.lat;
             wpt->longitude = cd.lon;
-            // TODO: creation_time
-            // TODO: depth (?)
-            // TODO: temperature
+	    // TODO: No timestamp on trackpoints?
+            //wpt->SetCreationTime((time_t) wpd->ts.date * 3600 * 24 + wpd->ts.timeofday);
+            if (trk[j].tseg[k].pt[i].tempr != TEMPR_NA)
+                WAYPT_SET(wpt, temperature, CELSIUS(trk[j].tseg[k].pt[i].tempr));
+            // TODO: depth units right?
+            if (trk[j].tseg[k].pt[i].depth != DEPTH_NA)
+                WAYPT_SET(wpt, depth, trk[j].tseg[k].pt[i].depth/100);
             track_add_wpt(track, wpt);
          }
          printf("# distance = %.1f nm, %.1f m\n", dist_seg * 60, DEG2M(dist_seg));
