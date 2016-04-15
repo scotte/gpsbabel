@@ -126,6 +126,7 @@ extern ff_vecs_t wbt_fvecs;
 extern ff_vecs_t gtc_vecs;
 extern ff_vecs_t dmtlog_vecs;
 extern ff_vecs_t raymarine_vecs;
+extern ff_vecs_t raymarine_fsh_vecs;
 extern ff_vecs_t alanwpr_vecs;
 extern ff_vecs_t alantrl_vecs;
 extern ff_vecs_t vitovtt_vecs;
@@ -679,6 +680,13 @@ vecs_t vec_list[] = {
     "Raymarine Waypoint File (.rwf)",
     "rwf",
     NULL,
+  },
+  {
+    &raymarine_fsh_vecs,
+    "fsh",
+    "Raymarine FSH File (.fsh)",
+    "fsh",
+     NULL,
   },
   {
     &alanwpr_vecs,
